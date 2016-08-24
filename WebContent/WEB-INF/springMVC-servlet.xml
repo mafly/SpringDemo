@@ -64,4 +64,14 @@
 		<property name="maxUploadSize" value="31457280" />
 	</bean>
 
+	<mvc:interceptors>
+		<!-- 直接定义在mvc:interceptors根下面的Interceptor将拦截所有的请求 -->
+		<mvc:interceptor>
+			<!-- 定义在mvc:interceptor下面的表示是对特定的请求才进行拦截的 -->
+			<mvc:mapping path="/api/**"/>
+			<bean class="cn.mayongfa.interceptor.TestInterceptor">
+			</bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+
 </beans>

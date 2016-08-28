@@ -122,6 +122,106 @@
 		<property name="logAbandoned" value="true" />
 	</bean>
 	
+	<!--goldMaster 配置数据源 -->
+	<bean id="goldMasterDataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<property name="driverClassName">
+			<value>${goldMaster.jdbc.driverClassName}</value>
+		</property>
+		<property name="url">
+			<value>${goldMaster.jdbc.url}</value>
+		</property>
+		<property name="username">
+			<value>${goldMaster.jdbc.username}</value>
+		</property>
+		<property name="password">
+			<value>${goldMaster.jdbc.password}</value>
+		</property>
+
+		<!-- 通过别名的方式配置扩展插件，常用的插件有：监控统计用的filter:stat 日志用的filter:log4j 防御sql注入的filter:wall -->
+		<!-- <property name="filters" value="stat,log4j" /> -->
+		<property name="proxyFilters">  
+            <list>  
+                <ref bean="stat-filter" />  
+                <ref bean="log-filter" />  
+            </list>   
+        </property> 
+		<!-- 最大并发连接数 -->
+		<property name="maxActive" value="30" />
+		<!-- 初始化连接数量 -->
+		<property name="initialSize" value="5" />
+		<!-- 配置获取连接等待超时的时间 -->
+		<property name="maxWait" value="60000" />
+		<!-- 最小空闲连接数 -->
+		<property name="minIdle" value="5" />
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="300000" />
+		<property name="validationQuery" value="SELECT 'x'" />
+		<property name="testWhileIdle" value="true" />
+		<property name="testOnBorrow" value="false" />
+		<property name="testOnReturn" value="false" />
+		<property name="poolPreparedStatements" value="false" />
+		<property name="maxOpenPreparedStatements" value="100" />
+		<!-- 打开removeAbandoned功能(连接泄漏监测，怀疑存在泄漏之后再打开) -->
+		<property name="removeAbandoned" value="true" />
+		<!-- 1800秒，也就是30分钟 -->
+		<property name="removeAbandonedTimeout" value="1800" />
+		<!-- 关闭abanded连接时输出错误日志 -->
+		<property name="logAbandoned" value="true" />
+	</bean>
+	
+	<!--goldSlave 配置数据源 -->
+	<bean id="goldSlaveDataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<property name="driverClassName">
+			<value>${goldSlave.jdbc.driverClassName}</value>
+		</property>
+		<property name="url">
+			<value>${goldSlave.jdbc.url}</value>
+		</property>
+		<property name="username">
+			<value>${goldSlave.jdbc.username}</value>
+		</property>
+		<property name="password">
+			<value>${goldSlave.jdbc.password}</value>
+		</property>
+
+		<!-- 通过别名的方式配置扩展插件，常用的插件有：监控统计用的filter:stat 日志用的filter:log4j 防御sql注入的filter:wall -->
+		<!-- <property name="filters" value="stat,log4j" /> -->
+		<property name="proxyFilters">  
+            <list>  
+                <ref bean="stat-filter" />  
+                <ref bean="log-filter" />  
+            </list>   
+        </property> 
+		<!-- 最大并发连接数 -->
+		<property name="maxActive" value="30" />
+		<!-- 初始化连接数量 -->
+		<property name="initialSize" value="5" />
+		<!-- 配置获取连接等待超时的时间 -->
+		<property name="maxWait" value="60000" />
+		<!-- 最小空闲连接数 -->
+		<property name="minIdle" value="5" />
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="300000" />
+		<property name="validationQuery" value="SELECT 'x'" />
+		<property name="testWhileIdle" value="true" />
+		<property name="testOnBorrow" value="false" />
+		<property name="testOnReturn" value="false" />
+		<property name="poolPreparedStatements" value="false" />
+		<property name="maxOpenPreparedStatements" value="100" />
+		<!-- 打开removeAbandoned功能(连接泄漏监测，怀疑存在泄漏之后再打开) -->
+		<property name="removeAbandoned" value="true" />
+		<!-- 1800秒，也就是30分钟 -->
+		<property name="removeAbandonedTimeout" value="1800" />
+		<!-- 关闭abanded连接时输出错误日志 -->
+		<property name="logAbandoned" value="true" />
+	</bean>
+	
 	<!-- 慢SQL记录 -->  
 	<bean id="stat-filter" class="com.alibaba.druid.filter.stat.StatFilter">  
 	     <property name="mergeSql" value="true" />  
@@ -133,10 +233,12 @@
 	    <property name="statementLogErrorEnabled" value="true" />  
 	</bean>
 	
-	<bean id="dataSource" class="cn.mayongfa.service.imp.DynamicDataSource">
+	<bean id="dataSource" class="cn.mayongfa.common.DynamicDataSource">
 		<property name="targetDataSources">
 			<map>
 				<entry key="slave" value-ref="slaveDataSource" />
+				<entry key="goldMaster" value-ref="goldMasterDataSource" />
+				<entry key="goldSlave" value-ref="goldSlaveDataSource" />
 			</map>
 		</property>
 		<property name="defaultTargetDataSource" ref="masterDataSource" />
@@ -151,7 +253,6 @@
 	<bean id="transactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
 		p:dataSource-ref="dataSource" />
-
 
 	<!-- 数据源切换类 -->
 	<bean id="dataSourceChoose" class="cn.mayongfa.interceptor.DataSourceChoose" />

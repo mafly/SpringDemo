@@ -1,24 +1,15 @@
 package cn.mayongfa.interceptor;
 
 import java.lang.reflect.Method;
-import java.util.Map;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 
-import cn.mayongfa.service.imp.JdbcContextHolder;
+import cn.mayongfa.common.JdbcContextHolder;
 
 public class DataSourceChoose {
-	
-	private Map<String, String> map;
-	
-	public Map<String, String> getMap() {
-		return map;
-	}
-	public void setMap(Map<String, String> map) {
-		this.map = map;
-	}
 
+	//方法执行前
 	public void before(JoinPoint point){
 		Object target = point.getTarget();  
         String method = point.getSignature().getName();  
@@ -36,5 +27,4 @@ public class DataSourceChoose {
             // TODO: handle exception  
         } 
 	}
-
 }

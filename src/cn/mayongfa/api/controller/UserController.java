@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -63,6 +64,7 @@ public class UserController {
 	 * @param oResponse
 	 * @return
 	 */
+	@CrossOrigin(origins = "http://mayongfa.cn", maxAge = 3600)
 	@ResponseBody
 	@RequestMapping(value = "getlist", produces = "application/json;charset=UTF-8", method = { RequestMethod.GET })
 	public String getList() {
@@ -161,7 +163,6 @@ public class UserController {
 	 * @param oResponse
 	 * @return
 	 */
-	@ResponseBody
 	@RequestMapping(value = "put", produces = "application/json;charset=UTF-8", method = { RequestMethod.POST })
 	public String put(HttpServletRequest oRequest, HttpServletResponse oResponse) {
 		int code = -1;
@@ -172,15 +173,15 @@ public class UserController {
 
 		String phone = oRequest.getParameter("phone") != null ? oRequest.getParameter("phone").toString() : "";
 
-		if(id == StrUtil.DEFAULT_NULL) {
+		if (id == StrUtil.DEFAULT_NULL) {
 			msg = "请选择用户！";
 		} else if (StrUtil.isNullOrEmpty(name)) {
 			msg = "请填写用户姓名！";
 		} else if (StrUtil.isNullOrEmpty(phone)) {
-			msg = "请填写电话！";
+			// msg = "请填写电话！";
 		} else {
 			UserBasis entity = userBasisService.getEntity(id);
-			if(entity != null && entity.getId() == id) {
+			if (entity != null && entity.getId() == id) {
 				entity.setName(name);
 				entity.setPhone(phone);
 				entity.setUpdatetime(new Date());
@@ -195,7 +196,7 @@ public class UserController {
 				msg = "用户不存在！";
 			}
 		}
-		
+
 		Map<String, Object> responseMap = new HashMap<String, Object>();
 		responseMap.put("code", code);
 		responseMap.put("msg", msg);

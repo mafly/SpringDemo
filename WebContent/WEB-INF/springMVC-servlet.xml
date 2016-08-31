@@ -74,4 +74,12 @@
 		</mvc:interceptor>
 	</mvc:interceptors>
 
+	<!-- API 接口跨域配置 -->
+	<mvc:cors>	
+		<mvc:mapping path="/api/v1/**"
+	        allowed-origins="*"
+	        allowed-methods="POST, GET, OPTIONS, DELETE, PUT"
+	        allowed-headers="Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"
+	        allow-credentials="true" />
+	</mvc:cors>
 </beans>

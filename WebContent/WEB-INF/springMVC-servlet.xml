@@ -17,7 +17,7 @@
 	<mvc:annotation-driven />
 	<mvc:resources location="/" mapping="/index.html" />
 
-	
+
 	<!-- 自动扫描controller包中的控制器 -->
 	<context:component-scan base-package="cn.mayongfa.api.controller" />
 	<context:component-scan base-package="cn.mayongfa.controller" />
@@ -56,8 +56,8 @@
 				<entry key="webroot" value="http://127.0.0.1:8080"></entry>
 			</map>
 		</property>
-	</bean>	
-	
+	</bean>
+
 	<!-- 上传文件拦截，设置最大上传文件大小 30M=30*1024*1024(B)=31457280 bytes -->
 	<bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
@@ -68,18 +68,21 @@
 		<!-- 直接定义在mvc:interceptors根下面的Interceptor将拦截所有的请求 -->
 		<mvc:interceptor>
 			<!-- 定义在mvc:interceptor下面的表示是对特定的请求才进行拦截的 -->
-			<mvc:mapping path="/api/**"/>
-			<bean class="cn.mayongfa.interceptor.TestInterceptor">
-			</bean>
+			<mvc:mapping path="/api/**" />
+			<bean class="cn.mayongfa.interceptor.TestInterceptor"></bean>
+		</mvc:interceptor>
+		<!-- 权限认证拦截器 -->
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<bean class="cn.mayongfa.interceptor.AuthorityAnnotationInterceptor"></bean>
 		</mvc:interceptor>
 	</mvc:interceptors>
 
 	<!-- API 接口跨域配置 -->
-	<mvc:cors>	
-		<mvc:mapping path="/api/v1/**"
-	        allowed-origins="*"
-	        allowed-methods="POST, GET, OPTIONS, DELETE, PUT"
-	        allowed-headers="Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"
-	        allow-credentials="true" />
+	<mvc:cors>
+		<mvc:mapping path="/api/v1/**" allowed-origins="*"
+			allowed-methods="POST, GET, OPTIONS, DELETE, PUT"
+			allowed-headers="Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"
+			allow-credentials="true" />
 	</mvc:cors>
 </beans>

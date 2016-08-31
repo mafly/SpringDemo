@@ -30,6 +30,11 @@ public class UserBasisServiceImp implements UserBasisService {
 	public UserBasis getEntity(long ID) {
 		return UserBasisdao.getEntity(ID);
 	}
+	
+	@Override
+	public UserBasis getEntity(String phone) {
+		return UserBasisdao.getEntity(phone);
+	}
 
 	@Override
 	public List<UserBasis> getList(Map<String, Object> whereMap, String OrderBy, int nStart, int nLimit){

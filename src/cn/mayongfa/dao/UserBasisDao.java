@@ -21,7 +21,7 @@ public class UserBasisDao {
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
-	
+
 	/**
 	 * 保存
 	 * 
@@ -33,19 +33,21 @@ public class UserBasisDao {
 		long ID = 0;
 		try {
 			if (entity.getId() == StrUtil.DEFAULT_NULL) {
-				//新增
+				// 新增
 				entity.setId(IdWorkerManage.getId());
 				String strSql = "insert into userbasis (id,name,password,phone,status,createtime,updatetime) values (?,?,?,?,?,?,?)";
-		
-				Object obj[] = { entity.getId(),entity.getName(),entity.getPassword(),entity.getPhone(),entity.getStatus(),entity.getCreatetime(),entity.getUpdatetime()};
+
+				Object obj[] = { entity.getId(), entity.getName(), entity.getPassword(), entity.getPhone(),
+						entity.getStatus(), entity.getCreatetime(), entity.getUpdatetime() };
 				int ret = jdbcTemplate.update(strSql, obj);
 				if (ret > 0) {
 					ID = entity.getId();
 				}
 			} else {
-				//修改
+				// 修改
 				String strSql = "update userbasis set id=?,name=?,password=?,phone=?,status=?,updatetime=? where id=?";
-				Object obj[] = { entity.getId(),entity.getName(),entity.getPassword(),entity.getPhone(),entity.getStatus(),entity.getUpdatetime(), entity.getId()};
+				Object obj[] = { entity.getId(), entity.getName(), entity.getPassword(), entity.getPhone(),
+						entity.getStatus(), entity.getUpdatetime(), entity.getId() };
 				int ret = jdbcTemplate.update(strSql, obj);
 				if (ret > 0) {
 					ID = entity.getId();
@@ -56,7 +58,7 @@ public class UserBasisDao {
 		}
 		return ID;
 	}
-	
+
 	/**
 	 * 删除
 	 * 
@@ -69,17 +71,17 @@ public class UserBasisDao {
 		int ret = jdbcTemplate.update(strSql, obj);
 		return ret > 0;
 	}
-	
+
 	/**
 	 * 获取
+	 * 
 	 * @param ID
 	 * @return
 	 */
 	public UserBasis getEntity(long ID) {
 		final UserBasis entity = new UserBasis();
 		String strSql = "select id,name,password,phone,status,createtime,updatetime from userbasis where id=?";
-		jdbcTemplate.query(strSql, new Object[]{ID},new RowCallbackHandler()
-		{
+		jdbcTemplate.query(strSql, new Object[] { ID }, new RowCallbackHandler() {
 			public void processRow(ResultSet rs) throws SQLException {
 				entity.setId(rs.getLong("id"));
 				entity.setName(rs.getString("name"));
@@ -88,13 +90,37 @@ public class UserBasisDao {
 				entity.setStatus(rs.getInt("status"));
 				entity.setCreatetime(rs.getDate("createtime"));
 				entity.setUpdatetime(rs.getDate("updatetime"));
-            }
+			}
 		});
 		return entity;
 	}
-	
+
+	/**
+	 * 获取
+	 * 
+	 * @param ID
+	 * @return
+	 */
+	public UserBasis getEntity(String phone) {
+		final UserBasis entity = new UserBasis();
+		String strSql = "select id,name,password,phone,status,createtime,updatetime from userbasis where phone=?";
+		jdbcTemplate.query(strSql, new Object[] { phone }, new RowCallbackHandler() {
+			public void processRow(ResultSet rs) throws SQLException {
+				entity.setId(rs.getLong("id"));
+				entity.setName(rs.getString("name"));
+				entity.setPassword(rs.getString("password"));
+				entity.setPhone(rs.getString("phone"));
+				entity.setStatus(rs.getInt("status"));
+				entity.setCreatetime(rs.getDate("createtime"));
+				entity.setUpdatetime(rs.getDate("updatetime"));
+			}
+		});
+		return entity;
+	}
+
 	/**
 	 * 根据条件获取
+	 * 
 	 * @return
 	 */
 	public List<UserBasis> getList(Map<String, Object> whereMap, String OrderBy, int nStart, int nLimit) {
@@ -134,10 +160,9 @@ public class UserBasisDao {
 		strSql = strSql + whereSql;
 		Object obj[] = whereobj.toArray(new Object[whereobj.size()]);
 		basisSql += " INNER JOIN (" + strSql + ") userbasis_id USING (id)";
-		jdbcTemplate.query(basisSql, obj, new RowCallbackHandler() 
-		{
-            public void processRow(ResultSet rs) throws SQLException {
-            	UserBasis entity = new UserBasis();
+		jdbcTemplate.query(basisSql, obj, new RowCallbackHandler() {
+			public void processRow(ResultSet rs) throws SQLException {
+				UserBasis entity = new UserBasis();
 				entity.setId(rs.getLong("id"));
 				entity.setName(rs.getString("name"));
 				entity.setPassword(rs.getString("password"));
@@ -145,14 +170,15 @@ public class UserBasisDao {
 				entity.setStatus(rs.getInt("status"));
 				entity.setCreatetime(rs.getDate("createtime"));
 				entity.setUpdatetime(rs.getDate("updatetime"));
-            	list.add(entity);
-            }
+				list.add(entity);
+			}
 		});
 		return list;
 	}
-	
+
 	/**
 	 * 根据条件获取数据条数
+	 * 
 	 * @return
 	 */
 	public int getListCount(Map<String, Object> whereMap) {
@@ -188,18 +214,18 @@ public class UserBasisDao {
 		Object obj[] = whereobj.toArray(new Object[whereobj.size()]);
 		return jdbcTemplate.queryForObject(strSql, obj, Integer.class);
 	}
-	
+
 	/**
 	 * 获取所有
+	 * 
 	 * @return
 	 */
 	public List<UserBasis> getList() {
 		final ArrayList<UserBasis> list = new ArrayList<UserBasis>();
 		String strSql = "select id,name,password,phone,status,createtime,updatetime from userbasis ";
-		jdbcTemplate.query(strSql, new Object[]{}, new RowCallbackHandler() 
-		{
-            public void processRow(ResultSet rs) throws SQLException {
-            	UserBasis entity = new UserBasis();
+		jdbcTemplate.query(strSql, new Object[] {}, new RowCallbackHandler() {
+			public void processRow(ResultSet rs) throws SQLException {
+				UserBasis entity = new UserBasis();
 				entity.setId(rs.getLong("id"));
 				entity.setName(rs.getString("name"));
 				entity.setPassword(rs.getString("password"));
@@ -207,11 +233,10 @@ public class UserBasisDao {
 				entity.setStatus(rs.getInt("status"));
 				entity.setCreatetime(rs.getDate("createtime"));
 				entity.setUpdatetime(rs.getDate("updatetime"));
-            	list.add(entity);
-            }
+				list.add(entity);
+			}
 		});
 		return list;
 	}
 
 }
-

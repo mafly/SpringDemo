@@ -34,6 +34,14 @@ public interface UserBasisService {
 	public UserBasis getEntity(long ID);
 	
 	/**
+	 * 获取信息
+	 * @param phone
+	 * @return
+	 */
+	@DataSource(DataSourceType.Slave)
+	public UserBasis getEntity(String phone);
+	
+	/**
 	 * 根据条件获取
 	 * @return
 	 */

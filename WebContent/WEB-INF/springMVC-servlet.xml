@@ -71,16 +71,16 @@
 			<mvc:mapping path="/api/**" />
 			<bean class="cn.mayongfa.interceptor.TestInterceptor"></bean>
 		</mvc:interceptor>
-		<!-- 权限认证拦截器 -->
+		<!-- 权限认证拦截器
 		<mvc:interceptor>
-			<mvc:mapping path="/**"/>
+			<mvc:mapping path="/account/**"/>
 			<bean class="cn.mayongfa.interceptor.AuthorityAnnotationInterceptor"></bean>
-		</mvc:interceptor>
+		</mvc:interceptor> -->
 	</mvc:interceptors>
 
 	<!-- API 接口跨域配置 -->
 	<mvc:cors>
-		<mvc:mapping path="/api/v1/**" allowed-origins="*"
+		<mvc:mapping path="/api/**" allowed-origins="*"
 			allowed-methods="POST, GET, OPTIONS, DELETE, PUT"
 			allowed-headers="Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"
 			allow-credentials="true" />

@@ -6,12 +6,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Retention(RetentionPolicy.RUNTIME)  
-@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+@Target(value = { ElementType.METHOD, ElementType.TYPE })
 @Documented
-public @interface Authority {  
-	
-    AuthorityType value() default AuthorityType.Validate;
-    
-}  
+public @interface Authority {
+	// 默认验证
+	AuthorityType value() default AuthorityType.Validate;
 
+}

@@ -20,6 +20,7 @@ import cn.mayongfa.model.UserBasis;
 import cn.mayongfa.service.UserBasisService;
 
 @Controller
+@Authority(AuthorityType.NoValidate)
 @RequestMapping("/account/*")
 public class AccountController {
 
@@ -52,6 +53,7 @@ public class AccountController {
 
 				} else {
 					msg = "用户密码错误！";
+					
 				}
 			} else {
 				msg = "用户不存在！";

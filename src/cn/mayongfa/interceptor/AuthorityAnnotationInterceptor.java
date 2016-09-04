@@ -13,7 +13,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import com.google.gson.Gson;
 
 /**
- * API 签名认证拦截器
+ * 权限认证拦截器
  *
  */
 public class AuthorityAnnotationInterceptor extends HandlerInterceptorAdapter {

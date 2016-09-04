@@ -64,7 +64,7 @@ public class UserController {
 	 * @param oResponse
 	 * @return
 	 */
-	@CrossOrigin(origins = "http://mayongfa.cn", maxAge = 3600)
+	@CrossOrigin(origins="*", maxAge = 3600)
 	@ResponseBody
 	@RequestMapping(value = "getlist", produces = "application/json;charset=UTF-8", method = { RequestMethod.GET })
 	public String getList() {

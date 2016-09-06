@@ -163,6 +163,7 @@ public class UserController {
 	 * @param oResponse
 	 * @return
 	 */
+	@ResponseBody
 	@RequestMapping(value = "put", produces = "application/json;charset=UTF-8", method = { RequestMethod.POST })
 	public String put(HttpServletRequest oRequest, HttpServletResponse oResponse) {
 		int code = -1;

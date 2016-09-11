@@ -38,6 +38,6 @@ public class GlodQuartz {
 	 */
 	@Scheduled(cron = "*/5 * * * * ? ")
 	public void cacheClear() {
-		System.out.println("时间又过去5秒了，真令人伤感...");
+		//System.out.println("时间又过去5秒了，真令人伤感...");
 	}
 }

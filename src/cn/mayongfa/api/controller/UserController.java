@@ -81,6 +81,8 @@ public class UserController {
 			code = 1;
 			msg = "请求成功!";
 		}
+		// 演示异常
+		userBasisService.getListCount(null);
 
 		Map<String, Object> responseMap = new HashMap<String, Object>();
 		responseMap.put("code", code);

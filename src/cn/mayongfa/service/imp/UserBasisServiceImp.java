@@ -17,6 +17,12 @@ public class UserBasisServiceImp implements UserBasisService {
 	private UserBasisDao UserBasisdao;
 	
 	@Override
+	public int getListCount(Map<String, Object> whereMap) {
+		throw new RuntimeException();
+		//return UserBasisdao.getListCount(whereMap);
+	}
+	
+	@Override
 	public long Save(UserBasis entity) {
 		return UserBasisdao.Save(entity);
 	}
@@ -40,11 +46,7 @@ public class UserBasisServiceImp implements UserBasisService {
 	public List<UserBasis> getList(Map<String, Object> whereMap, String OrderBy, int nStart, int nLimit){
 		return UserBasisdao.getList(whereMap, OrderBy, nStart, nLimit);
 	}
-	
-	@Override
-	public int getListCount(Map<String, Object> whereMap) {
-		return UserBasisdao.getListCount(whereMap);
-	}
+
 	
 	@Override
 	public List<UserBasis> getList() {

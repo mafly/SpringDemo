@@ -31,13 +31,13 @@ public class GlodQuartz {
 	 */
 	@Scheduled(cron = "0 0 1 * * ? ")
 	public void addUserScore() {
-		System.out.println("凌晨一点");
+		System.out.println("凌晨一点了，你睡了么？");
 	}
 	/**
 	 * 每隔5秒定时清理缓存
 	 */
 	@Scheduled(cron = "*/5 * * * * ? ")
 	public void cacheClear() {
-		System.out.println("5秒了");
+		System.out.println("时间又过去5秒了，真令人伤感...");
 	}
 }

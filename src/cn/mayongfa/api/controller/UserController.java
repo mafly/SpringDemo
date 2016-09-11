@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -27,6 +28,7 @@ import cn.mayongfa.service.UserBasisService;
 @RequestMapping("/api/user/*")
 public class UserController {
 
+	private static Logger log = Logger.getLogger(UserController.class);
 	@Autowired
 	private UserBasisService userBasisService;
 
@@ -42,11 +44,14 @@ public class UserController {
 	public String get(@RequestParam("id") long id) {
 		int code = -1;
 		String msg = "";
-
 		UserBasis entity = userBasisService.getEntity(id);
-		if (entity != null && entity.getId() > 0) {
-			code = 1;
-			msg = "请求成功!";
+		try {
+			if (entity != null && entity.getId() > 0) {
+				code = 1;
+				msg = "请求成功!";
+			}
+		} catch (Exception e) {
+			log.error("出错啦！", e);
 		}
 
 		Map<String, Object> responseMap = new HashMap<String, Object>();
@@ -64,7 +69,7 @@ public class UserController {
 	 * @param oResponse
 	 * @return
 	 */
-	@CrossOrigin(origins="*", maxAge = 3600)
+	@CrossOrigin(origins = "*", maxAge = 3600)
 	@ResponseBody
 	@RequestMapping(value = "getlist", produces = "application/json;charset=UTF-8", method = { RequestMethod.GET })
 	public String getList() {

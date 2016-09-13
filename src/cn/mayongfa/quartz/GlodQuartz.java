@@ -30,7 +30,7 @@ public class GlodQuartz {
 	 * 每天凌晨一点执行一次
 	 */
 	@Scheduled(cron = "0 0 1 * * ? ")
-	public void addUserScore() {
+	public void addUserGold() {
 		System.out.println("凌晨一点了，你睡了么？");
 	}
 	/**

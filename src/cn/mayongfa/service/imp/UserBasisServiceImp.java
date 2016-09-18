@@ -6,7 +6,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cn.mayongfa.cache.UserBasisCache;
 import cn.mayongfa.dao.UserBasisDao;
 import cn.mayongfa.model.UserBasis;
 import cn.mayongfa.service.UserBasisService;
@@ -16,30 +15,20 @@ public class UserBasisServiceImp implements UserBasisService {
 
 	@Autowired
 	private UserBasisDao UserBasisdao;
-	@Autowired
-	private UserBasisCache UserBasiscache;
 
 	@Override
 	public long Save(UserBasis entity) {
-		long id = UserBasisdao.Save(entity);
-		if (id > 0) {
-			UserBasiscache.set(entity);
-		}
-		return id;
+		return UserBasisdao.Save(entity);
 	}
 
 	@Override
 	public Boolean Delete(long ID) {
-		boolean result = UserBasisdao.Delete(ID);
-		if (result) {
-			UserBasiscache.delete(ID);
-		}
-		return result;
+		return UserBasisdao.Delete(ID);
 	}
 
 	@Override
 	public UserBasis getEntity(long ID) {
-		return UserBasiscache.get(ID);
+		return UserBasisdao.getEntity(ID);
 	}
 
 	@Override

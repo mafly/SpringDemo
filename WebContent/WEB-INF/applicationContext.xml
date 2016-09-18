@@ -19,7 +19,7 @@
 			<list>
 				<value>classpath:global.properties</value>
 				<value>classpath:jdbc.properties</value>
-				<value>classpath:memcached.properties</value>
+				<value>classpath:jms.properties</value>
 			</list>
 		</property>
 	</bean>
@@ -29,7 +29,6 @@
 	<context:component-scan base-package="cn.mayongfa.common" />
 	<context:component-scan base-package="cn.mayongfa.service" />
 	<context:component-scan base-package="cn.mayongfa.dao" />
-	<context:component-scan base-package="cn.mayongfa.cache" />
 	
 	<!--master 配置数据源 -->
 	<bean id="masterDataSource" class="com.alibaba.druid.pool.DruidDataSource"
@@ -274,50 +273,7 @@
 		<tx:attributes>
 			<tx:method name="*" />
 		</tx:attributes>
-	</tx:advice>
-
-	<!-- Memcached 配置 -->
-	<bean id="memcachedClientBuilder" class="net.rubyeye.xmemcached.XMemcachedClientBuilder"
-		p:connectionPoolSize="${memcached.connectionPoolSize}" p:failureMode="${memcached.failureMode}">
-		<constructor-arg>
-			<list>
-				<bean class="java.net.InetSocketAddress">
-					<constructor-arg>
-						<value>${server1.memcached.host}</value>
-					</constructor-arg>
-					<constructor-arg>
-						<value>${server1.memcached.port}</value>
-					</constructor-arg>
-				</bean>
-				<bean class="java.net.InetSocketAddress">
-					<constructor-arg>
-						<value>${server2.memcached.host}</value>
-					</constructor-arg>
-					<constructor-arg>
-						<value>${server2.memcached.port}</value>
-					</constructor-arg>
-				</bean>
-			</list>
-		</constructor-arg>
-		<constructor-arg>
-			<list>
-				<value>${server1.memcached.weight}</value>
-				<value>${server2.memcached.weight}</value>
-			</list>
-		</constructor-arg>
-		<property name="commandFactory">
-			<bean class="net.rubyeye.xmemcached.command.TextCommandFactory" />
-		</property>
-		<property name="sessionLocator">
-			<bean class="net.rubyeye.xmemcached.impl.KetamaMemcachedSessionLocator" />
-		</property>
-		<property name="transcoder">
-			<bean class="net.rubyeye.xmemcached.transcoders.SerializingTranscoder" />
-		</property>
-	</bean>
-	<bean id="memcachedClient" factory-bean="memcachedClientBuilder"
-		factory-method="build" destroy-method="shutdown" />
-		
+	</tx:advice>		
 		
 	<!-- Spring提供的JMS工具类，它可以进行消息发送、接收等 -->
 	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
@@ -327,7 +283,7 @@
 
 	<!-- 真正可以产生Connection的ConnectionFactory，由ActiveMQ提供 -->
 	<bean id="targetConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
-		<property name="brokerURL" value="failover:tcp://192.168.3.15:61616" />
+		<property name="brokerURL" value="${basis.jms.brokerurl}" />
 		<!-- 消息传输监听器 处理网络及服务器异常 -->
 		<property name="transportListener">
 			<bean class="cn.mayongfa.activemq.ActiveMQTransportListener" />
@@ -343,7 +299,7 @@
 	<!--这个是队列目的地 -->
 	<bean id="queueDestination" class="org.apache.activemq.command.ActiveMQQueue">
 		<constructor-arg>
-			<value>default_queue,gold_queue</value>
+			<value>${default.jms.name},${gold.jms.name}</value>
 		</constructor-arg>
 	</bean>
 	<!-- 消息监听器 -->

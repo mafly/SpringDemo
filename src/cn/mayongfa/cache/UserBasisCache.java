@@ -48,6 +48,9 @@ public class UserBasisCache extends MemcachedBasis {
 			if (entity == null || entity.getId() <= 0) {
 				entity = userBasisDao.getEntity(id);
 				this.set(entity);
+				System.out.println("数据库读取...");
+			} else {
+				System.out.println("缓存读取，并没有读数据库...");
 			}
 		} catch (TimeoutException | InterruptedException | MemcachedException e) {
 			log.error("", e);

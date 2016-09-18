@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 
-import cn.mayongfa.activemq.MessageSender;
 import cn.mayongfa.common.MD5Util;
 import cn.mayongfa.common.StrUtil;
 import cn.mayongfa.interceptor.Authority;
@@ -27,8 +26,6 @@ public class AccountController {
 
 	@Autowired
 	private UserBasisService userBasisService;
-	@Autowired
-	private MessageSender messageSender;
 
 	/**
 	 * login
@@ -52,7 +49,6 @@ public class AccountController {
 					code = 1;
 					msg = "登录成功！";
 
-					messageSender.userLogin(entity.getId(), entity.getName());
 					// TODO:
 
 				} else {
